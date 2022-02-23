@@ -4,10 +4,14 @@
  
 # Import standard modules.
 import sys
+import platform
  
 # Import non-standard modules.
 import pygame
 from pygame.locals import *
+
+picture = pygame.image.load("testImage.png")
+picture = pygame.transform.scale(picture, (100, 100))
 
 x = 200
 y = 200
@@ -63,7 +67,8 @@ def draw(screen):
   """
   screen.fill((0, 0, 0)) # Fill the screen with black.
   global x, y
-  pygame.draw.circle(screen, (255, 0, 0), (x, y), 20)
+  pygame.draw.circle(screen, (255, 0, 0), (int(x), int(y)), 20)
+  screen.blit(picture, (int(x) - 50, int(y) - 50))
   # Redraw screen here.
   
   # Flip the display so that the things we drew actually show up.
