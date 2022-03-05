@@ -10,18 +10,20 @@ import platform
 import pygame
 from pygame.locals import *
 
+w, h = 100, 100
 picture = pygame.image.load("testImage.png")
-picture = pygame.transform.scale(picture, (100, 100))
+picture = pygame.transform.scale(picture, (w, h))
 
 x = 200
 y = 200
 
-up = 1073741906
-down = 1073741905
-right = 1073741904
-left = 1073741903
+pygame.font.init()
+font = pygame.font.SysFont(None, 50)
+victory_text = font.render('Victory', True, (0, 255, 0))
 
 speed = 300
+
+victory = False
 
 def control(dt):
   global x
@@ -50,6 +52,15 @@ def update(dt):
   
   control(dt)
 
+  ## Check victory
+  global victory
+  if abs(x - 250) < 10 and abs(y - 250) < 10:
+    victory = True
+  else:
+    victory = False
+  
+  
+
   # Go through events that are passed to the script by the window.
   for event in pygame.event.get():
     # We need to handle these events. Initially the only one you'll want to care
@@ -68,7 +79,12 @@ def draw(screen):
   screen.fill((0, 0, 0)) # Fill the screen with black.
   global x, y
   pygame.draw.circle(screen, (255, 0, 0), (int(x), int(y)), 20)
-  screen.blit(picture, (int(x) - 50, int(y) - 50))
+  screen.blit(picture, (int(x) - w / 2, int(y) - h / 2))
+  
+  pygame.draw.rect(screen, (0, 255, 0), (250 - 50, 250 - 50, 100, 100), 3)
+  
+  if victory:
+    screen.blit(victory_text, (250 - 50, 20))
   # Redraw screen here.
   
   # Flip the display so that the things we drew actually show up.
@@ -83,7 +99,7 @@ def runPyGame():
   fpsClock = pygame.time.Clock()
   
   # Set up the window.
-  width, height = 640, 480
+  width, height = 500, 500
   screen = pygame.display.set_mode((width, height))
   
   # screen is the surface representing the window.
